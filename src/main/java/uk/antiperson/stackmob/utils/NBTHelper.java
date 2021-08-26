@@ -18,12 +18,6 @@ public class NBTHelper {
         return nmsItem.hasTag() ? (nmsItem.getTag().hasKey(tag) ? nmsItem.getTag().getInt(tag) : 0) : 0;
     }
 
-    // Helper function to read an Integer NBT tag
-    public static Boolean getNBTBool(ItemStack item, String tag) {
-        net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        return nmsItem.hasTag() ? (nmsItem.getTag().hasKey(tag) ? nmsItem.getTag().getBoolean(tag) : false) : false;
-    }
-
     // Helper function to remove a specific NBT tag outright
     public static ItemStack removeNBT(ItemStack item, String tag) {
         net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
@@ -38,15 +32,6 @@ public class NBTHelper {
         net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
         comp.setInt(tag, value);
-        nmsItem.setTag(comp);
-        return CraftItemStack.asBukkitCopy(nmsItem);
-    }
-
-    // Helper function to make or set an NBT tag to supplied value
-    public static ItemStack setNBTBool(ItemStack item, String tag, Boolean value) {
-        net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound comp = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
-        comp.setBoolean(tag, value);
         nmsItem.setTag(comp);
         return CraftItemStack.asBukkitCopy(nmsItem);
     }

@@ -4,7 +4,6 @@ import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.trait.*;
-import uk.antiperson.stackmob.utils.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;

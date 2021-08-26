@@ -15,7 +15,9 @@ stack:
   # The maximum size that a stack can have.
   max-size: 30
   # How often entities should be checked for stacking (in ticks. 20 ticks = 1 second) (*)
-  interval: 100
+  stack-interval: 100
+  # How often stacked entities should be saved (in ticks. 20 ticks = 1 second) (*)
+  save-interval: 12000
   # The area around an entity for which applicable stacks should be found.
   # Format: [(x cord),(y cord),(z cord)]
   merge-range: [10,10,10]
@@ -75,12 +77,10 @@ traits:
   slime-size: true
   horse-color: true
   llama-color: true
-  drowned-hand-item: true
   age: true
   breed-mode: true
   love-mode: true
   cat-type: true
-  mooshroom-variant: true
   leashed: true
   villager-profession: true
   potion-effect: true
@@ -237,13 +237,11 @@ wait-to-stack:
   types-whitelist:
     - ZOMBIE
     - SKELETON
-    - ZOMBIFIED_PIGLIN
     - CREEPER
     - ENDERMAN
   types-whitelist-invert: false
   # Spawn reasons that this should work for. (2)
   reasons-whitelist:
-    - SPAWNER
   reasons-whitelist-invert: false
 
 # Enable/disable integration with other plugins. (*)

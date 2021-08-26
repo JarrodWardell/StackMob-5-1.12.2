@@ -2,30 +2,23 @@ package uk.antiperson.stackmob.entity;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.hook.StackableMobHook;
-import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
-import uk.antiperson.stackmob.utils.NMSHelper;
 import uk.antiperson.stackmob.utils.Utilities;
-import uk.antiperson.stackmob.entity.StackMetadata;
-import java.io.Serializable;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class StackEntity implements Serializable {
+public class StackEntity {
 
     private final LivingEntity entity;
     private final EntityManager entityManager;
@@ -74,9 +67,11 @@ public class StackEntity implements Serializable {
     }
 
     public void removeStackData() {
+        // FIXME CustomNames aren't disabled when StackEntity is removed using tool. Could stem from here or from Tool.
         entity.removeMetadata(sm.getStackKey(), sm);
-        entity.setCustomNameVisible(false);
         entityManager.unregisterStackedEntity(this);
+        entity.setCustomName("");
+        entity.setCustomNameVisible(false);
         getTag().update();
     }
 
@@ -188,7 +183,7 @@ public class StackEntity implements Serializable {
      */
     public int getSize() {
         if (stackSize == 0) {
-            stackSize = (Integer) getEntity().getMetadata(sm.getStackKey()).iterator().next().value(); // this is ugly :(
+            stackSize = (Integer) (getEntity().getMetadata(sm.getStackKey()).size() != 0 ? getEntity().getMetadata(sm.getStackKey()).get(0).value() : 1);
         }
         return stackSize;
     }

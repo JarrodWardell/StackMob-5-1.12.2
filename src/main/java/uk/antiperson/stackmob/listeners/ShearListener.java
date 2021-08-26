@@ -9,11 +9,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
+//import org.bukkit.inventory.meta.ItemMeta;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
+//import org.bukkit.inventory.ItemStack;
 /*
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
@@ -92,36 +92,40 @@ public class ShearListener implements Listener {
             return null;
         }
         int limit = sm.getMainConfig().getEventMultiplyLimit(entity.getType(), "shear", stackEntity.getSize());
-        Damageable damageable = (Damageable) item.getItemMeta();
-        int health = item.getType().getMaxDurability() - damageable.getDamage();
-        int amount = Math.min(health, limit);
+        short health = item.getType().getMaxDurability();
+        short amount = (short) Math.min(health, limit);
+        
         stackEntity.splitIfNotEnough(amount);
-        int damage = health - amount;
+        short damage = (short) (health - amount);
         if (damage > 0) {
-            damageable.setDamage(damageable.getDamage() + amount);
-            item.setItemMeta((ItemMeta) damageable);
+            item.setDurability((short) (item.getDurability() - amount));
         } else {
             item = new ItemStack(Material.AIR);
         }
-        if (entity instanceof Sheep) { // i don't like you, sheep. >:(
-            /*Sheep sheared = (Sheep) entity;
-            LootContext lootContext = new LootContext.Builder(sheared.getLocation()).lootedEntity(sheared).build();
-            Collection<ItemStack> loot = sheared.getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
-            for (ItemStack itemStack : loot) {
-                if (Tag.WOOL.isTagged(itemStack.getType())) {
-                    int woolAmount = (int) Math.round(amount * ThreadLocalRandom.current().nextDouble(1, 2));
-                    Drops.dropItem(sheared.getLocation(), itemStack, woolAmount, true);
+        if (entity instanceof Sheep) {
+            sm.getServer().getScheduler().runTaskLater(sm, new Runnable() {
+                public void run() {
+                    for (Entity nearby : entity.getNearbyEntities(4, 4, 4)) {
+                        if (nearby instanceof Item && ((Item) nearby).getItemStack().getType() == Material.WOOL) {
+                            int total = 0;
+                            for (int i = amount; i > 0; i--) {
+                                total += (int)(Math.random() * ((3 - 1) + 1)) + 1; // since loot tables aren't here, i need to generate the wool amounts myself :(
+                            }
+                            while (total > 64) {
+                                ((Item) nearby).getItemStack().clone().setAmount(64);
+                                total -= 64;
+                            }
+                            ((Item) nearby).getItemStack().setAmount(total);
+                            return;
+                        }
+                    }
                 }
-            }*/
+            }, 4);
             return item;
         }
         MushroomCow mushroomCow = (MushroomCow) entity;
         ItemStack mushrooms = new ItemStack(Material.RED_MUSHROOM, 1);
         Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5, true);
-        // Spawn separate normal cow for the rest of the stack.
-        Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
-        StackEntity stackCow = sm.getEntityManager().registerStackedEntity((LivingEntity) cow);
-        stackCow.setSize(amount - 1);
         return item;
     }
 }

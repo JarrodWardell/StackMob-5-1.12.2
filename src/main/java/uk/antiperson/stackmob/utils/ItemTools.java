@@ -27,7 +27,7 @@ public class ItemTools {
                 ChatColor.GOLD + "Right click to perform action" ,
                 ChatColor.GOLD + "Shift-right click to change mode."));
         is.setItemMeta(itemMeta);
-        NBTHelper.setNBTInt(is, sm.getToolKey(), 1);
+        is = NBTHelper.setNBTInt(is, sm.getToolKey(), 0);
         return is;
     }
 

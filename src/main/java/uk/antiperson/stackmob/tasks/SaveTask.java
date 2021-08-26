@@ -12,7 +12,7 @@ public class SaveTask extends BukkitRunnable {
     }
 
     public void run() {
-        sm.getEntityManager().getDataManager().saveData("./plugins/StackMob/stackmob.data");
+        sm.getEntityManager().saveData(sm.getSaveDirectory());
     }
 
 }

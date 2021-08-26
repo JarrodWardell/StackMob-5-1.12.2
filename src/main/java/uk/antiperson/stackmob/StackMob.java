@@ -1,7 +1,7 @@
 package uk.antiperson.stackmob;
 
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
+//import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidPluginException;
@@ -18,7 +18,7 @@ import uk.antiperson.stackmob.tasks.MergeTask;
 import uk.antiperson.stackmob.tasks.TagTask;
 import uk.antiperson.stackmob.tasks.SaveTask;
 import uk.antiperson.stackmob.utils.ItemTools;
-import uk.antiperson.stackmob.utils.TemporaryCompat;
+//import uk.antiperson.stackmob.utils.TemporaryCompat;
 import uk.antiperson.stackmob.utils.Updater;
 import uk.antiperson.stackmob.utils.Utilities;
 
@@ -31,6 +31,7 @@ public class StackMob extends JavaPlugin {
 
     private final String stackKey = "stack-size";
     private final String toolKey = "stack-tool";
+    private final String saveDirectory = "./plugins/" + this.getName() + "/stackmob.data";
 
     private MainConfig config;
     private EntityTranslation entityTranslation;
@@ -54,7 +55,8 @@ public class StackMob extends JavaPlugin {
     @Override
     public void onEnable() {
         traitManager = new TraitManager(this);
-        entityManager = new EntityManager(this);
+        entityManager = EntityManager.loadData(saveDirectory, this);
+
         config = new MainConfig(this);
         entityTranslation = new EntityTranslation(this);
         updater = new Updater(this, 29999);
@@ -91,8 +93,8 @@ public class StackMob extends JavaPlugin {
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
         int tagInterval = getMainConfig().getTagNearbyInterval();
         new TagTask(this).runTaskTimer(this, 10, tagInterval);
-
-        new SaveTask(this).runTaskTimer(this, 600, 600); // save entities every 10 minutes
+        int saveInterval = getMainConfig().getSaveInterval();
+        new SaveTask(this).runTaskTimer(this, 600, saveInterval);
         /*if (!Utilities.isNativeVersion() && getHookManager().getProtocolLibHook() == null) {
             getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
             getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
@@ -125,6 +127,7 @@ public class StackMob extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        getEntityManager().saveData(saveDirectory);
         getEntityManager().unregisterAllEntities();
     }
 
@@ -218,6 +221,10 @@ public class StackMob extends JavaPlugin {
 
     public String getToolKey() {
         return toolKey;
+    }
+
+    public String getSaveDirectory() {
+        return saveDirectory;
     }
 
     public ItemTools getItemTools() {

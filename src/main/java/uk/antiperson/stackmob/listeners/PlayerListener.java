@@ -30,7 +30,8 @@ public class PlayerListener implements Listener {
         if (event.getPlayer().isSneaking()) {
             stackingTool.shiftMode();
             return;
+        } else {
+            stackingTool.performAction((LivingEntity) event.getRightClicked());
         }
-        stackingTool.performAction((LivingEntity) event.getRightClicked());
     }
 }

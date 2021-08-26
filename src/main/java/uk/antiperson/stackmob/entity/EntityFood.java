@@ -1,7 +1,6 @@
 package uk.antiperson.stackmob.entity;
 
 import org.bukkit.Material;
-import org.bukkit.Tag;
 //import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

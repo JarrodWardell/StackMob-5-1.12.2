@@ -2,7 +2,7 @@ package uk.antiperson.stackmob.commands.subcommands;
 
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Mob;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.*;
@@ -24,7 +24,7 @@ public class Remove extends SubCommand {
 
     @Override
     public boolean onCommand(User sender, String[] args) {
-        Function<Entity, Boolean> function = entity -> entity instanceof Mob;
+        Function<Entity, Boolean> function = entity -> entity instanceof LivingEntity;
         if (args.length == 1) {
             switch (args[0]) {
                 case "animals":

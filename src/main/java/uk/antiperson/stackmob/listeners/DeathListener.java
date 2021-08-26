@@ -1,8 +1,8 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.Statistic;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
+/*import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;*/
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

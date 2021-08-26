@@ -2,7 +2,7 @@ package uk.antiperson.stackmob.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Mob;
+import org.bukkit.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class CommandArgument {
                     if (etype.getEntityClass() == null) {
                         continue;
                     }
-                    if (!Mob.class.isAssignableFrom(etype.getEntityClass())) {
+                    if (!LivingEntity.class.isAssignableFrom(etype.getEntityClass())) {
                         continue;
                     }
                     strings.add(etype.toString());

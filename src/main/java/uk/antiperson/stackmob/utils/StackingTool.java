@@ -8,7 +8,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 //import org.bukkit.inventory.meta.ItemMeta;
@@ -24,7 +23,7 @@ import java.util.Set;
 public class StackingTool {
 
     private final Player player;
-    private final ItemStack itemStack;
+    private ItemStack itemStack;
     private final StackMob sm;
 
     public StackingTool(StackMob sm, Player player) {
@@ -48,7 +47,7 @@ public class StackingTool {
 
     public void shiftMode() {
         int nextMode = (getModeId() + 1) >= ToolMode.values().length ? 0 : getModeId() + 1;
-        NBTHelper.setNBTInt(itemStack, sm.getToolKey(), nextMode);
+        itemStack = NBTHelper.setNBTInt(itemStack, sm.getToolKey(), nextMode);
 
         player.getInventory().setItemInMainHand(itemStack);
         BaseComponent[] baseComponent = TextComponent.fromLegacyText(ChatColor.WHITE + "Shifted mode to " + ChatColor.GRAY + getMode());
@@ -88,9 +87,10 @@ public class StackingTool {
                     slices.forEach(sliced -> sliced.setForgetOnSpawn(true));
                 }
                 break;
+            // FIXME The REMOVE mode on tool does not remove nametags properly. Possibly stems from StackEntity.removeStackData();
             case REMOVE_CHUNK:
                 for (Entity e : clicked.getChunk().getEntities()) {
-                    if (!(e instanceof Mob)) {
+                    if (!(e instanceof LivingEntity)) {
                         continue;
                     }
                     if (!sm.getEntityManager().isStackedEntity((LivingEntity) e)) {

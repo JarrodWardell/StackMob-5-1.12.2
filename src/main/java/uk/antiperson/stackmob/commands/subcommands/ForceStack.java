@@ -3,7 +3,6 @@ package uk.antiperson.stackmob.commands.subcommands;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -37,7 +36,7 @@ public class ForceStack extends SubCommand {
             }
         }
         for (World world : Bukkit.getWorlds()) {
-            for (LivingEntity entity : world.getEntitiesByClass(Mob.class)) {
+            for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class)) {
                 if (sm.getEntityManager().isStackedEntity(entity)) {
                     continue;
                 }

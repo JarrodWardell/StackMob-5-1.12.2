@@ -8,7 +8,7 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.listeners.ListenerMode;
-import uk.antiperson.stackmob.utils.Utilities;
+//import uk.antiperson.stackmob.utils.Utilities;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -39,7 +39,11 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public int getStackInterval() {
-        return getInt("stack.interval");
+        return getInt("stack.stack-interval");
+    }
+
+    public int getSaveInterval() {
+        return getInt("stack.save-interval");
     }
 
     public boolean isCheckHasMoved() {
@@ -197,8 +201,8 @@ public class MainConfig extends SpecialConfigFile {
             if (dead.getLastDamageCause() != null && reasons.contains(dead.getLastDamageCause().getCause().toString())) {
                 continue;
             }
-            ConfigList spawnReasons = getList(dead.getType(), "death." + type + ".spawn-reason-blacklist");
-            /*if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
+            /*ConfigList spawnReasons = getList(dead.getType(), "death." + type + ".spawn-reason-blacklist");
+            if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
                 continue;
             }*/
             ConfigList types = getList(dead.getType(), "death." + type + ".type-blacklist");
